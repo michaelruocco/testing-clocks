@@ -1,16 +1,15 @@
 package uk.co.mruoc.test.clock;
 
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.Clock;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.Optional;
 
 @Slf4j
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class OverridableClock extends Clock {
 
@@ -29,6 +28,11 @@ public class OverridableClock extends Clock {
 
     public OverridableClock(Clock clock) {
         this(clock, null);
+    }
+
+    public OverridableClock(Clock clock, Instant override) {
+        this.clock = clock;
+        this.setOverride(override);
     }
 
     @Override
@@ -50,6 +54,10 @@ public class OverridableClock extends Clock {
         Instant instant = clock.instant();
         log.debug("returning current time {}", instant);
         return instant;
+    }
+
+    public void plus(Duration duration) {
+        setOverride(override.plus(duration));
     }
 
     public void setOverride(Instant override) {

@@ -3,6 +3,7 @@ package uk.co.mruoc.test.clock;
 import org.junit.jupiter.api.Test;
 
 import java.time.Clock;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 
@@ -47,6 +48,17 @@ class OverridableClockTest {
         Instant instant = clock.instant();
 
         assertThat(instant).isEqualTo(override);
+    }
+
+    @Test
+    void shouldAddDurationToOverride() {
+        Instant override = Instant.parse("2021-01-07T19:10:00.000Z");
+        OverridableClock clock = new OverridableClock(override);
+        Duration duration = Duration.ofMinutes(5);
+
+        clock.plus(duration);
+
+        assertThat(clock.instant()).isEqualTo(override.plus(duration));
     }
 
     @Test
