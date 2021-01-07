@@ -1,4 +1,4 @@
-# Library Template
+# Testing Clocks
 
 [![Build](https://github.com/michaelruocco/testing-clocks/workflows/pipeline/badge.svg)](https://github.com/michaelruocco/testing-clocks/actions)
 [![codecov](https://codecov.io/gh/michaelruocco/testing-clocks/branch/master/graph/badge.svg?token=FWDNP534O7)](https://codecov.io/gh/michaelruocco/testing-clocks)
