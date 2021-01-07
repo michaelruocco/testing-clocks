@@ -49,6 +49,10 @@ public class OffsetClock extends Clock {
         return instant;
     }
 
+    public Duration getOffset() {
+        return offset;
+    }
+
     public void setOffset(Duration offset) {
         this.offset = offset;
         log.debug("set offset {}", offset);

@@ -51,6 +51,15 @@ class OffsetClockTest {
     }
 
     @Test
+    void shouldReturnOffset() {
+        Duration offset = Duration.ofMinutes(5);
+
+        OffsetClock clock = new OffsetClock(offset);
+
+        assertThat(clock.getOffset()).isEqualTo(offset);
+    }
+
+    @Test
     void shouldBeAbleToUpdateAndResetOffset() {
         OffsetClock clock = new OffsetClock();
 
