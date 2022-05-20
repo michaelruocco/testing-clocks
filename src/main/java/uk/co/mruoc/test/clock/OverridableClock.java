@@ -55,8 +55,9 @@ public class OverridableClock extends Clock {
         return instant;
     }
 
-    public void plus(Duration duration) {
-        setOverride(override.plus(duration));
+    public void plus(Duration offset) {
+        Instant time = getOverride().orElse(clock.instant());
+        setOverride(time.plus(offset));
     }
 
     public void setOverride(Instant override) {

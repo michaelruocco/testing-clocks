@@ -64,8 +64,8 @@ Instant instant4 = clock.instant(); // will return 2021-01-07T08:05:00.000Z
 
 ### OverridableClock
 
-```OverridableClock``` is very similar to ```OffsetClock```, except instead of allowing you to set an offset that is
-applied to the current time you can directly override the current value time to be returned.
+```OverridableClock``` is very similar to ```OffsetClock```, except as well as allowing you to set an offset that is
+applied to the current time, you can also directly override the current value time to be returned.
 
 ```java
 OverridableClock clock = new OverridableClock();
