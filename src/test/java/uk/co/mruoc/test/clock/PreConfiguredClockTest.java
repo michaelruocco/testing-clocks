@@ -1,14 +1,12 @@
 package uk.co.mruoc.test.clock;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+import static uk.co.mruoc.test.clock.InstantAssert.assertThatInstant;
 
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static uk.co.mruoc.test.clock.InstantAssert.assertThatInstant;
-
+import org.junit.jupiter.api.Test;
 
 class PreConfiguredClockTest {
 
@@ -50,5 +48,4 @@ class PreConfiguredClockTest {
         assertThat(clock.instant()).isEqualTo(expected1);
         assertThat(clock.instant()).isEqualTo(expected2);
     }
-
 }

@@ -1,16 +1,15 @@
 package uk.co.mruoc.test.clock;
 
-import org.assertj.core.api.AbstractAssert;
-import org.assertj.core.data.TemporalOffset;
-import org.assertj.core.data.TemporalUnitOffset;
+import static java.time.temporal.ChronoUnit.MILLIS;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.within;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.Temporal;
-
-import static java.time.temporal.ChronoUnit.MILLIS;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.within;
+import org.assertj.core.api.AbstractAssert;
+import org.assertj.core.data.TemporalOffset;
+import org.assertj.core.data.TemporalUnitOffset;
 
 public class InstantAssert extends AbstractAssert<InstantAssert, Instant> {
 
@@ -45,5 +44,4 @@ public class InstantAssert extends AbstractAssert<InstantAssert, Instant> {
         assertThat(actual).isCloseTo(expected, allowedVariance);
         return this;
     }
-
 }

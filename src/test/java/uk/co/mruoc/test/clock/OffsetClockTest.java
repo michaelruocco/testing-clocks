@@ -1,15 +1,13 @@
 package uk.co.mruoc.test.clock;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+import static uk.co.mruoc.test.clock.InstantAssert.assertThatInstant;
 
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static uk.co.mruoc.test.clock.InstantAssert.assertThatInstant;
-
+import org.junit.jupiter.api.Test;
 
 class OffsetClockTest {
 
@@ -75,5 +73,4 @@ class OffsetClockTest {
         clock.setOffset(offset);
         assertThatInstant(clock.instant()).isCloseToCurrentTimeWithOffset(offset);
     }
-
 }

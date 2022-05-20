@@ -1,13 +1,12 @@
 package uk.co.mruoc.test.clock;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.extern.slf4j.Slf4j;
-
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @AllArgsConstructor
@@ -61,5 +60,4 @@ public class OffsetClock extends Clock {
     public void reset() {
         setOffset(DEFAULT_OFFSET);
     }
-
 }

@@ -1,9 +1,5 @@
 package uk.co.mruoc.test.clock;
 
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -13,6 +9,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.IntUnaryOperator;
+import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @EqualsAndHashCode(callSuper = true)
@@ -81,5 +80,4 @@ public class PreConfiguredClock extends Clock {
             return incremented;
         }
     }
-
 }

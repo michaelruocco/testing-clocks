@@ -1,13 +1,12 @@
 package uk.co.mruoc.test.clock;
 
-import lombok.EqualsAndHashCode;
-import lombok.extern.slf4j.Slf4j;
-
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.Optional;
+import lombok.EqualsAndHashCode;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @EqualsAndHashCode(callSuper = true)
@@ -75,5 +74,4 @@ public class OverridableClock extends Clock {
         }
         return Optional.ofNullable(override);
     }
-
 }
