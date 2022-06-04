@@ -44,8 +44,12 @@ public class OverridableClock extends Clock {
     }
 
     public void setOverrides(Instant... overrides) {
-        log.debug("set overrides {}", Arrays.toString(overrides));
-        this.overrides = toList(overrides);
+        setOverrides(new ArrayList<>(Arrays.asList(overrides)));
+    }
+
+    public void setOverrides(List<Instant> overrides) {
+        log.debug("set overrides {}", overrides);
+        this.overrides = overrides;
     }
 
     public void clearOverrides() {
