@@ -49,23 +49,25 @@ class OverridableClockTest {
     }
 
     @Test
+    void shouldReturnMultipleOverriddenCurrentTimesIfConfigured() {
+        Instant override1 = Instant.parse("2021-01-04T23:24:07.385Z");
+        Instant override2 = Instant.parse("2021-02-05T22:20:13.474Z");
+        Clock clock = new OverridableClock(override1, override2);
+
+        Instant instant1 = clock.instant();
+        Instant instant2 = clock.instant();
+        Instant instant3 = clock.instant();
+
+        assertThat(instant1).isEqualTo(override1);
+        assertThat(instant2).isEqualTo(override2);
+        assertThatInstant(instant3).isCloseToCurrentTime();
+    }
+
+    @Test
     void shouldAddOffsetToOverrideIfSet() {
         Instant override = Instant.parse("2021-01-07T19:10:00.000Z");
         OverridableClock clock = new OverridableClock(override);
         Duration offset = Duration.ofMinutes(5);
-        clock.setOffset(offset);
-
-        Instant instant = clock.instant();
-
-        assertThat(instant).isEqualTo(override.plus(offset));
-    }
-
-    @Test
-    void shouldSetOverrideAndAddOffset() {
-        OverridableClock clock = new OverridableClock();
-        Instant override = Instant.parse("2021-02-06T12:12:12.122Z");
-        Duration offset = Duration.ofMinutes(4);
-        clock.setOverrides(override);
         clock.setOffset(offset);
 
         Instant instant = clock.instant();
