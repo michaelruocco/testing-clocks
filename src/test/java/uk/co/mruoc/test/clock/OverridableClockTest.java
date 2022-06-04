@@ -49,14 +49,15 @@ class OverridableClockTest {
     }
 
     @Test
-    void shouldAddOffsetToOverride() {
+    void shouldAddOffsetToOverrideIfSet() {
         Instant override = Instant.parse("2021-01-07T19:10:00.000Z");
         OverridableClock clock = new OverridableClock(override);
         Duration offset = Duration.ofMinutes(5);
+        clock.setOffset(offset);
 
-        clock.plus(offset);
+        Instant instant = clock.instant();
 
-        assertThat(clock.instant()).isEqualTo(override.plus(offset));
+        assertThat(instant).isEqualTo(override.plus(offset));
     }
 
     @Test
@@ -64,37 +65,39 @@ class OverridableClockTest {
         OverridableClock clock = new OverridableClock();
         Instant override = Instant.parse("2021-02-06T12:12:12.122Z");
         Duration offset = Duration.ofMinutes(4);
+        clock.setOverrides(override);
+        clock.setOffset(offset);
 
-        clock.setOverride(override);
-        clock.plus(offset);
+        Instant instant = clock.instant();
 
-        assertThat(clock.instant()).isEqualTo(override.plus(offset));
+        assertThat(instant).isEqualTo(override.plus(offset));
     }
 
     @Test
     void shouldBeAbleToUpdateAndClearOverride() {
         OverridableClock clock = new OverridableClock();
-
         assertOverriddenTimeReturned(clock, Instant.parse("2021-02-05T22:22:22.222Z"));
         assertOverriddenTimeReturned(clock, Instant.parse("2021-03-06T11:11:11.111Z"));
+        clock.clearOverrides();
 
-        clock.clearOverride();
+        Instant instant = clock.instant();
 
-        assertThatInstant(clock.instant()).isCloseToCurrentTime();
+        assertThatInstant(instant).isCloseToCurrentTime();
     }
 
     @Test
     void shouldSetOffsetIfOverrideIsNotSet() {
         OverridableClock clock = new OverridableClock();
         Duration offset = Duration.ofMinutes(3);
+        clock.setOffset(offset);
 
-        clock.plus(offset);
+        Instant instant = clock.instant();
 
-        assertThatInstant(clock.instant()).isCloseToCurrentTimeWithOffset(offset);
+        assertThatInstant(instant).isCloseToCurrentTimeWithOffset(offset);
     }
 
     private void assertOverriddenTimeReturned(OverridableClock clock, Instant override) {
-        clock.setOverride(override);
+        clock.setOverrides(override);
         assertThat(clock.instant()).isEqualTo(override);
     }
 }

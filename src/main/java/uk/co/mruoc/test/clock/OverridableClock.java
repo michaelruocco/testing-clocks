@@ -4,34 +4,52 @@ import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 
 @Slf4j
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class OverridableClock extends Clock {
 
     private static final Clock DEFAULT_CLOCK = Clock.systemUTC();
+    private static final Duration DEFAULT_OFFSET = Duration.ZERO;
 
     private final Clock clock;
-    private Instant override;
+    private Duration offset;
+    private List<Instant> overrides;
 
     public OverridableClock() {
-        this(DEFAULT_CLOCK);
+        this(Collections.emptyList());
     }
 
-    public OverridableClock(Instant override) {
-        this(DEFAULT_CLOCK, override);
+    public OverridableClock(Instant... overrides) {
+        this(toList(overrides));
     }
 
-    public OverridableClock(Clock clock) {
-        this(clock, null);
+    public OverridableClock(List<Instant> overrides) {
+        this(DEFAULT_CLOCK, DEFAULT_OFFSET, overrides);
     }
 
-    public OverridableClock(Clock clock, Instant override) {
-        this.clock = clock;
-        this.setOverride(override);
+    public void setOffset(Duration offset) {
+        log.debug("set offset {}", offset);
+        this.offset = offset;
+    }
+
+    public void setOverrides(Instant... overrides) {
+        log.debug("set overrides {}", Arrays.toString(overrides));
+        this.overrides = toList(overrides);
+    }
+
+    public void clearOverrides() {
+        setOverrides();
     }
 
     @Override
@@ -41,12 +59,22 @@ public class OverridableClock extends Clock {
 
     @Override
     public Clock withZone(ZoneId zone) {
-        return new OverridableClock(clock.withZone(zone), override);
+        return new OverridableClock(clock.withZone(zone), offset, overrides);
     }
 
     @Override
     public Instant instant() {
-        return getOverride().orElseGet(this::getCurrentTime);
+        Instant instant = getOverride().orElseGet(this::getCurrentTime);
+        return instant.plus(offset);
+    }
+
+    private Optional<Instant> getOverride() {
+        if (CollectionUtils.isEmpty(overrides)) {
+            return Optional.empty();
+        }
+        Instant override = overrides.remove(0);
+        log.debug("returning override time {}", override);
+        return Optional.ofNullable(override);
     }
 
     private Instant getCurrentTime() {
@@ -55,24 +83,7 @@ public class OverridableClock extends Clock {
         return instant;
     }
 
-    public void plus(Duration offset) {
-        Instant time = getOverride().orElse(clock.instant());
-        setOverride(time.plus(offset));
-    }
-
-    public void setOverride(Instant override) {
-        this.override = override;
-        log.debug("set override {}", override);
-    }
-
-    public void clearOverride() {
-        setOverride(null);
-    }
-
-    private Optional<Instant> getOverride() {
-        if (override != null) {
-            log.debug("return overridden time {}", override);
-        }
-        return Optional.ofNullable(override);
+    private static List<Instant> toList(Instant... values) {
+        return new ArrayList<>(Arrays.asList(values));
     }
 }
