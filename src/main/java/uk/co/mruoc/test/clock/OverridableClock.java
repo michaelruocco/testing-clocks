@@ -43,6 +43,10 @@ public class OverridableClock extends Clock {
         this.offset = offset;
     }
 
+    public void clearOffset() {
+        setOffset(Duration.ZERO);
+    }
+
     public void setOverrides(Instant... overrides) {
         setOverrides(new ArrayList<>(Arrays.asList(overrides)));
     }
