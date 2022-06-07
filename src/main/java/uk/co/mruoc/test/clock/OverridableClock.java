@@ -6,16 +6,15 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 
 @Slf4j
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class OverridableClock extends Clock {
 
@@ -34,8 +33,14 @@ public class OverridableClock extends Clock {
         this(toList(overrides));
     }
 
-    public OverridableClock(List<Instant> overrides) {
+    public OverridableClock(Collection<Instant> overrides) {
         this(DEFAULT_CLOCK, DEFAULT_OFFSET, overrides);
+    }
+
+    public OverridableClock(Clock clock, Duration offset, Collection<Instant> overrides) {
+        this.clock = clock;
+        this.offset = offset;
+        this.overrides = toList(overrides);
     }
 
     public void setOffset(Duration offset) {
@@ -51,9 +56,9 @@ public class OverridableClock extends Clock {
         setOverrides(new ArrayList<>(Arrays.asList(overrides)));
     }
 
-    public void setOverrides(List<Instant> overrides) {
+    public void setOverrides(Collection<Instant> overrides) {
         log.debug("set overrides {}", overrides);
-        this.overrides = overrides;
+        this.overrides = toList(overrides);
     }
 
     public void clearOverrides() {
@@ -92,6 +97,10 @@ public class OverridableClock extends Clock {
     }
 
     private static List<Instant> toList(Instant... values) {
-        return new ArrayList<>(Arrays.asList(values));
+        return toList(Arrays.asList(values));
+    }
+
+    private static List<Instant> toList(Collection<Instant> values) {
+        return new ArrayList<>(values);
     }
 }
