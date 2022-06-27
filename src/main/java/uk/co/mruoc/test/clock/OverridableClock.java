@@ -48,6 +48,10 @@ public class OverridableClock extends Clock {
         this.offset = offset;
     }
 
+    public Duration getOffset() {
+        return offset;
+    }
+
     public void clearOffset() {
         setOffset(Duration.ZERO);
     }
@@ -61,8 +65,12 @@ public class OverridableClock extends Clock {
         this.overrides = toList(overrides);
     }
 
+    public Collection<Instant> getOverrides() {
+        return overrides;
+    }
+
     public void clearOverrides() {
-        setOverrides();
+        setOverrides(Collections.emptyList());
     }
 
     @Override
