@@ -8,6 +8,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.Collection;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class OverridableClockTest {
@@ -65,10 +66,22 @@ class OverridableClockTest {
     }
 
     @Test
-    void shouldReturnOverridesIfConfigured() {
+    void shouldReturnOverridesIfConfiguredInConstructor() {
         Instant override1 = Instant.parse("2021-01-04T23:24:07.385Z");
         Instant override2 = Instant.parse("2021-02-05T22:20:13.474Z");
         OverridableClock clock = new OverridableClock(override1, override2);
+
+        Collection<Instant> overrides = clock.getOverrides();
+
+        assertThat(overrides).containsExactly(override1, override2);
+    }
+
+    @Test
+    void shouldReturnOverridesIfConfigured() {
+        Instant override1 = Instant.parse("2021-01-04T23:24:07.385Z");
+        Instant override2 = Instant.parse("2021-02-05T22:20:13.474Z");
+        OverridableClock clock = new OverridableClock();
+        clock.setOverrides(List.of(override1, override2));
 
         Collection<Instant> overrides = clock.getOverrides();
 
