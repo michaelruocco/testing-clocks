@@ -36,7 +36,7 @@ public class OverridableClock extends Clock {
     }
 
     public Duration getOffset() {
-        return repository.getOffset();
+        return repository.getOffset().orElse(Duration.ZERO);
     }
 
     public void clearOffset() {
@@ -72,7 +72,7 @@ public class OverridableClock extends Clock {
     @Override
     public Instant instant() {
         Instant instant = repository.removeNextOverride().orElseGet(this::getCurrentTime);
-        return instant.plus(repository.getOffset());
+        return instant.plus(getOffset());
     }
 
     private Instant getCurrentTime() {

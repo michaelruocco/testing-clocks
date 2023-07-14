@@ -14,21 +14,15 @@ import org.apache.commons.collections4.CollectionUtils;
 @Slf4j
 public class InMemoryOverridableClockRepository implements OverridableClockRepository {
 
-    private static final Duration DEFAULT_OFFSET = Duration.ZERO;
-
     private Duration offset;
     private List<Instant> overrides;
 
     public InMemoryOverridableClockRepository() {
-        this(Collections.emptyList());
+        this(null, Collections.emptyList());
     }
 
     public InMemoryOverridableClockRepository(Instant... overrides) {
-        this(toList(overrides));
-    }
-
-    public InMemoryOverridableClockRepository(Collection<Instant> overrides) {
-        this(DEFAULT_OFFSET, overrides);
+        this(null, toList(overrides));
     }
 
     public InMemoryOverridableClockRepository(Duration offset, Collection<Instant> overrides) {
@@ -42,13 +36,13 @@ public class InMemoryOverridableClockRepository implements OverridableClockRepos
     }
 
     @Override
-    public Duration getOffset() {
-        return offset;
+    public Optional<Duration> getOffset() {
+        return Optional.ofNullable(offset);
     }
 
     @Override
     public void clearOffset() {
-        setOffset(Duration.ZERO);
+        setOffset(null);
     }
 
     @Override

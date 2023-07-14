@@ -9,7 +9,7 @@ public interface OverridableClockRepository {
 
     void setOffset(Duration offset);
 
-    Duration getOffset();
+    Optional<Duration> getOffset();
 
     void clearOffset();
 
